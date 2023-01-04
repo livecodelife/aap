@@ -1,0 +1,29 @@
+.timer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.time {
+  font-size: 3em;
+  margin-bottom: 1em;
+}
+
+.start-button,
+.pause-button {
+  font-size: 1em;
+  padding: 0.5em 1em;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.start-button {
+  background-color: #28a745;
+  color: white;
+}
+
+.pause-button {
+  background-color: #dc3545;
+  color: white;
+}
