@@ -1,40 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import './Timer.css';
 
-function Timer() {
+const Timer = () => {
   const [time, setTime] = useState(10);
-  const [isRunning, setIsRunning] = useState(false);
+  const [paused, setPaused] = useState(false);
   const [started, setStarted] = useState(false);
 
   useEffect(() => {
-    if (isRunning && time > 0) {
+    if (started && !paused && time > 0) {
       const interval = setInterval(() => {
         setTime(time - 1);
       }, 1000);
 
       return () => clearInterval(interval);
-    } else {
-      setIsRunning(false);
     }
-  }, [isRunning, time]);
+  }, [started, paused, time]);
 
-  function handleStart() {
-    setIsRunning(true);
+  const isPostAA = () => started && time == 0;
+
+  const isPreAA = () => started && time > 0;
+
+  const handleStart = () => {
     setStarted(true);
   }
 
-  function handlePause() {
-    setIsRunning(prevIsRunning => !prevIsRunning);
+  const handlePause = () => {
+    setPaused(prevPaused => !prevPaused);
   }
 
   return (
     <div className="timer">
-      <div className="time">{time}</div>
-      <button hidden={started} className="start-button" onClick={handleStart}>
-        Start
+      <div hidden={!isPreAA()} className="time">{time} seconds until Post Adverse Action</div>
+      <div hidden={!isPostAA()} className="time">Post Adverse Action reached</div>
+      <button hidden={isPreAA() || isPostAA()} className="start-button" onClick={handleStart}>
+        Pre Adverse Action
       </button>
-      <button hidden={!started} className="pause-button" onClick={handlePause}>
-        {isRunning ? 'Pause' : 'Resume'}
+      <button hidden={!isPreAA()} className={paused ? 'start-button' : 'pause-button'} onClick={handlePause}>
+        {!paused ? 'Pause' : 'Resume'}
       </button>
     </div>
   );
